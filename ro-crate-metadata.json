@@ -12,7 +12,7 @@
       "name": "Tiago Lubiana"
     },
     {
-      "@id": "ozx_ro_crate.md",
+      "@id": "index.md",
       "@type": "File",
       "name": "OME-Zarr RO-Crate Profile description",
       "encodingFormat": "text/markdown",
@@ -37,7 +37,7 @@
         "@id": "http://www.w3.org/ns/dx/prof/role/specification"
       },
       "hasArtifact": {
-        "@id": "ozx_ro_crate.md"
+        "@id": "index.md"
       }
     },
     {
@@ -56,7 +56,7 @@
       },
       "hasPart": [
         {
-          "@id": "ozx_ro_crate.md"
+          "@id": "index.md"
         },
         {
           "@id": "https://schema.org/CreativeWork"

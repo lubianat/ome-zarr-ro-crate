@@ -29,7 +29,7 @@ license = License(iri="https://mit-license.org/", name="MIT License")
 specifications = [
     TextualResource(
         name="OME-Zarr RO-Crate Profile description",
-        file_path="ozx_ro_crate.md",
+        file_path="index.md",
         encoding_format="text/markdown",
         root_data_entity_id=id,
     )
