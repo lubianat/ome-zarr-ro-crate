@@ -17,7 +17,7 @@
       "name": "OME-Zarr RO-Crate Profile description",
       "encodingFormat": "text/markdown",
       "about": {
-        "@id": "https://github.com/lubianat/ozx_ro_crate/crate/tree/0.0.1/profile"
+        "@id": "https://github.com/lubianat/ozx_ro_crate/crate/tree/0.0.1dev/profile"
       }
     },
     {
@@ -41,7 +41,7 @@
       }
     },
     {
-      "@id": "https://github.com/lubianat/ozx_ro_crate/crate/tree/0.0.1/profile",
+      "@id": "https://github.com/lubianat/ozx_ro_crate/crate/tree/0.0.1dev/profile",
       "@type": [
         "Dataset",
         "Profile"
@@ -68,14 +68,14 @@
       "hasResource": {
         "@id": "#hasSpecification"
       },
-      "datePublished": "2025-12-08T17:37:14.873-03:00",
+      "datePublished": "2025-12-08T18:31:09.621-03:00",
       "isProfileOf": "https://w3id.org/ro/crate/1.2"
     },
     {
       "@id": "ro-crate-metadata.json",
       "@type": "CreativeWork",
       "about": {
-        "@id": "https://github.com/lubianat/ozx_ro_crate/crate/tree/0.0.1/profile"
+        "@id": "https://github.com/lubianat/ozx_ro_crate/crate/tree/0.0.1dev/profile"
       },
       "license": {
         "@id": "https://mit-license.org/"

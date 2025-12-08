@@ -134,42 +134,51 @@ Every conforming crate **MUST**:
 ```json
 {
   "organism_classification": "https://schema.org/taxonomicRange",
-  "BioChemEntity": "https://schema.org/BioChemEntity",
-  "channel": "https://www.openmicroscopy.org/Schemas/Documentation/Generated/OME-2016-06/ome_xsd.html#Channel",
   "obo": "http://purl.obolibrary.org/obo/",
-  "FBcv": "http://ontobee.org/ontology/FBcv/",
   "acquisiton_method": {
     "@reverse": "https://schema.org/result",
     "@type": "@id"
   },
   "biological_entity": "https://schema.org/about",
   "biosample": "http://purl.obolibrary.org/obo/OBI_0002648",
-  "preparation_method": "https://www.wikidata.org/wiki/Property:P1537",
   "specimen": "http://purl.obolibrary.org/obo/HSO_0000308"
 }
 ```
 
 Crates **MAY** include additional context entries (extra URLs or term maps) to carry arbitrary Linked Open Data; these do not affect conformance as long as the required base context and terms above are present.
 
-Example (1.1 base context plus extra terms):
+Optional example terms (not required for conformance; you may include any other terms you need):
+
+```json
+{
+  "BioChemEntity": "https://schema.org/BioChemEntity",
+  "channel": "https://www.openmicroscopy.org/Schemas/Documentation/Generated/OME-2016-06/ome_xsd.html#Channel",
+  "FBcv": "http://ontobee.org/ontology/FBcv/",
+  "preparation_method": "https://www.wikidata.org/wiki/Property:P1537"
+}
+```
+
+Example (1.1 base context plus an optional imaging-oriented block):
 
 ```json
 "@context": [
   "https://w3id.org/ro/crate/1.1/context",
   {
     "organism_classification": "https://schema.org/taxonomicRange",
-    "BioChemEntity": "https://schema.org/BioChemEntity",
-    "channel": "https://www.openmicroscopy.org/Schemas/Documentation/Generated/OME-2016-06/ome_xsd.html#Channel",
     "obo": "http://purl.obolibrary.org/obo/",
-    "FBcv": "http://ontobee.org/ontology/FBcv/",
     "acquisiton_method": {
       "@reverse": "https://schema.org/result",
       "@type": "@id"
     },
     "biological_entity": "https://schema.org/about",
     "biosample": "http://purl.obolibrary.org/obo/OBI_0002648",
-    "preparation_method": "https://www.wikidata.org/wiki/Property:P1537",
     "specimen": "http://purl.obolibrary.org/obo/HSO_0000308"
+  },
+  {
+    "BioChemEntity": "https://schema.org/BioChemEntity",
+    "channel": "https://www.openmicroscopy.org/Schemas/Documentation/Generated/OME-2016-06/ome_xsd.html#Channel",
+    "FBcv": "http://ontobee.org/ontology/FBcv/",
+    "preparation_method": "https://www.wikidata.org/wiki/Property:P1537"
   },
   "https://example.org/custom/context",
   { "@vocab": "https://example.org/vocab#" }
@@ -179,9 +188,10 @@ Example (1.1 base context plus extra terms):
 The required terms define compact identifiers for:
 
 * organism taxon (NCBI Taxon IDs),
-* FBbi imaging modality (`fbbi_id` on the acquisition),
-* specimen and biosample structure,
-* additional useful imaging-related terms.
+* the acquisition → specimen → biosample chain,
+* reverse linkage (`acquisiton_method`) back to the root dataset.
+
+The optional block above is illustrative only; include any additional contexts/terms you need for your data.
 
 ---
 

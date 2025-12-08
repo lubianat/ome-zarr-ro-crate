@@ -10,7 +10,7 @@ types = [
 authors = [Author(name="Tiago Lubiana", orcid="0000-0003-2473-2313")]
 
 # Version of the profile (semver if possible)
-version = "0.0.1"
+version = "0.0.1dev"
 
 # Identifier of the root data entity of the profile, if url not applicable then use "./"
 id = f"https://github.com/lubianat/ozx_ro_crate/crate/tree/{version}/profile"
