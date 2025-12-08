@@ -1,0 +1,38 @@
+{
+    "@context": [
+        "https://w3id.org/ro/crate/1.2/context"
+    ],
+    "@graph": [
+        {
+            "@id": "./",
+            "@type": "Dataset",
+            "name": "No metadata descriptor crate",
+            "description": "Root exists but ro-crate-metadata.json is missing",
+            "license": "https://creativecommons.org/licenses/by/4.0/",
+            "resultOf": {
+                "@id": "#acq"
+            }
+        },
+        {
+            "@id": "#acq",
+            "@type": "image_acquisition",
+            "specimen": {
+                "@id": "#spec"
+            }
+        },
+        {
+            "@id": "#spec",
+            "@type": "specimen",
+            "biosample": {
+                "@id": "#bio"
+            }
+        },
+        {
+            "@id": "#bio",
+            "@type": "biosample",
+            "organism_classification": {
+                "@id": "NCBI:txid9606"
+            }
+        }
+    ]
+}

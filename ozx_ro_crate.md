@@ -6,30 +6,27 @@
 
 **Status:** Draft
 
-This document defines the **OME-Zarr RO-Crate profile**, a minimal RO-Crate convention for OME-Zarr datasets — especially those produced in the context of the **OME 2024 NGFF Challenge**, where every dataset includes:
+This document defines the **OME-Zarr RO-Crate profile**, a minimal RO-Crate convention for OME-Zarr datasets. While not a part of the OME-Zarr spec, this formalizes the use of RO-Crate the context of the **OME 2024 NGFF Challenge** and extends it as a non-normative guideline. 
 
-* conversion of v2→v3 arrays,
-* NGFF-compatible `zarr.json` metadata,
-* a top-level `ro-crate-metadata.json` with minimal imaging metadata (organism + modality).
+The goal of the profile is to enable individuals generating OME-Zarr data to: 
 
-The aims of this profile are:
+* add licensing information to the dataset
+* add basic information for searching, namely the imaging modality and the species studied
+* support arbitrary metadata to be packed in OME-Zarr files
 
-* define predictable **minimal metadata** for OME-Zarr datasets: *license*, *organism* (species), *imaging modality*, *name*, *description*;
-* provide a clear **entity structure** for linking OME-Zarr data → acquisition event → specimen → organism;
-* allow **stable and lightweight RO-Crate tooling** for producers and consumers;
-* provide a stepping-stone for deeper OME/NGFF alignment.
+The profile is agnostic to OME-Zarr versions and should be compatible with any, as long as it is provided in the root of the Zarr hierarchy. 
 
-Normative keywords **MUST**, **SHOULD**, **MAY** follow RFC 2119.
+RFC-9 compatible datasets ("zip zarrs" or Zipped OME-Zarrs) may include a ro-crate-metadata.json file, as non-zipped Zarrs can.
 
 ## 1. Introduction
 
-As not everyone is used to the Linked Data jargon and the JSON-LD details, as well as the RO-Crate model, this introduction/glossary was conceived.
+As not everyone is used to the Linked Data jargon and the JSON-LD details, as well as the RO-Crate model, this introduction/glossary was conceived. If you are unfamiliar with JSON-LD, for example, [this video](https://www.youtube.com/watch?v=vioCbTo3C-4) may be a good place to start.  
 
 * **RO-Crate**: a combination of data files originated in scientific research AND a metadata file called `ro-crate-metadata.json`. The metadata is written in JSON-LD and follows some rules, which are refined by this Profile.
 
 * **Root Data Entity**: in OME-Zarr files, this logical JSON-LD entity refers to the data as a whole, pointing to the root directory including the OME-Zarr `zarr.json` metadata. As OME-Zarr is already a multi-folder format, the `ro-crate-metadata.json` is put directly *inside* the file.
 
-* **@type**, **@context**, **@id** and **@graph** etc.: fields preceded by "@" are special keywords in JSON-LD that make JSON files "semantic" in the Semantic Web sense. They disambiguate concepts and are boilerplate for some applications.
+* **@type**, **@context**, **@id** and **@graph** etc.: fields preceded by "@" are special keywords in JSON-LD that make JSON files "semantic" in the Semantic Web sense. They disambiguate concepts and are boilerplate for some applications. 
 
 * **@id**: As RO-Crates use *flattened* JSON-LD, everything gets an **@id** field. It may be a string or a URI. If it looks like a string in JSON-LD, it is actually using the **@context** under the hood to create URIs. For example:
 
@@ -207,7 +204,7 @@ Represents the imaging modality and link to the specimen.
 
 ### 3.3 Specimen Entity
 
-A specimen **MUST** refer to exactly one biosample.
+If present, a specimen **MUST** refer to exactly one biosample.
 
 ```json
 {
@@ -219,7 +216,6 @@ A specimen **MUST** refer to exactly one biosample.
 
 ### 3.4 Biosample Entity
 
-Each crate **MUST** define at least one **biosample**:
 
 ```json
 {
