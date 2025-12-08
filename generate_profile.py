@@ -7,19 +7,20 @@ types = [
 ]
 
 # List all authors of this profile
-authors = [Author(name="Tiago Lubiana")]
+authors = [Author(name="Tiago Lubiana", orcid="0000-0003-2473-2313")]
 
 # Version of the profile (semver if possible)
-version = "0.0.1-draft.1"
+version = "0.0.1"
 
 # Identifier of the root data entity of the profile, if url not applicable then use "./"
 id = f"https://github.com/lubianat/zarro-crate/tree/{version}/profile"
 
 # Name of the profile
-name = "ISA RO-Crate Profile"
+name = "Experimental OME-Zarr minimal RO-Crate Profile"
 
 # Description of the profile
-description = "An RO-Crate profile for representing ISA data in Research Object Crates (RO-Crates). This profile defines how to represent ISA Investigation, Study, and Assay data using RO-Crate metadata."
+
+description = "An RO-Crate profile for representing OME-Zarr data in Research Object Crates (RO-Crates). "
 
 # License by which the profile is published
 license = License(iri="https://mit-license.org/", name="MIT License")
@@ -28,7 +29,7 @@ license = License(iri="https://mit-license.org/", name="MIT License")
 specifications = [
     TextualResource(
         name="ISA RO-Crate Profile description",
-        file_path="isa_ro_crate.md",
+        file_path="ozx_ro_crate.md",
         encoding_format="text/markdown",
         root_data_entity_id=id,
     )

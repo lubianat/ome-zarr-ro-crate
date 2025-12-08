@@ -1,0 +1,86 @@
+{
+  "@context": "https://w3id.org/ro/crate/1.2/context",
+  "@graph": [
+    {
+      "@id": "https://mit-license.org/",
+      "@type": "CreativeWork",
+      "name": "MIT License"
+    },
+    {
+      "@id": "https://orcid.org/0000-0003-2473-2313",
+      "@type": "Person",
+      "name": "Tiago Lubiana"
+    },
+    {
+      "@id": "ozx_ro_crate.md",
+      "@type": "File",
+      "name": "ISA RO-Crate Profile description",
+      "encodingFormat": "text/markdown",
+      "about": {
+        "@id": "https://github.com/lubianat/zarro-crate/tree/0.0.1/profile"
+      }
+    },
+    {
+      "@id": "https://schema.org/CreativeWork",
+      "@type": "DefinedTerm",
+      "name": "CreativeWork"
+    },
+    {
+      "@id": "http://www.w3.org/ns/dx/prof/Profile",
+      "@type": "DefinedTerm",
+      "name": "Profile"
+    },
+    {
+      "@id": "#hasSpecification",
+      "@type": "ResourceDescriptor",
+      "hasRole": {
+        "@id": "http://www.w3.org/ns/dx/prof/role/specification"
+      },
+      "hasArtifact": {
+        "@id": "ozx_ro_crate.md"
+      }
+    },
+    {
+      "@id": "https://github.com/lubianat/zarro-crate/tree/0.0.1/profile",
+      "@type": [
+        "Dataset",
+        "Profile"
+      ],
+      "license": {
+        "@id": "https://mit-license.org/"
+      },
+      "name": "Experimental OME-Zarr minimal RO-Crate Profile",
+      "description": "An RO-Crate profile for representing OME-Zarr data in Research Object Crates (RO-Crates). ",
+      "author": {
+        "@id": "https://orcid.org/0000-0003-2473-2313"
+      },
+      "hasPart": [
+        {
+          "@id": "ozx_ro_crate.md"
+        },
+        {
+          "@id": "https://schema.org/CreativeWork"
+        },
+        {
+          "@id": "http://www.w3.org/ns/dx/prof/Profile"
+        }
+      ],
+      "hasResource": {
+        "@id": "#hasSpecification"
+      },
+      "datePublished": "2025-12-08T11:39:33.573-03:00",
+      "isProfileOf": "https://w3id.org/ro/crate/1.2"
+    },
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "about": {
+        "@id": "https://github.com/lubianat/zarro-crate/tree/0.0.1/profile"
+      },
+      "license": {
+        "@id": "https://mit-license.org/"
+      },
+      "conformsTo": "https://w3id.org/ro/crate/1.2"
+    }
+  ]
+}
