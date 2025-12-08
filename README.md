@@ -1,0 +1,1 @@
+A simple RO-Crate 1.2 profile specifying the practice at https://ome.github.io/ome2024-ngff-challenge/ 
