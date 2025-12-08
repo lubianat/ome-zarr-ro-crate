@@ -1,7 +1,5 @@
 # OME-Zarr RO-Crate Profile 0.1
 
-**Profile URI:** `https://w3id.org/ozx/ome-zarr-ro-crate/0.1`
-
 **Version:** 0.1.0
 
 **RO-Crate version:** `isProfileOf = https://w3id.org/ro/crate/1.1`
@@ -96,9 +94,9 @@ The Root Dataset **MUST**:
 
 * have `@type` including `"Dataset"`;
 * specify `name`, `description`, and `license`;
-* refer via `resultOf` to **exactly one** `ImageAcquisition` entity.
+* refer via `resultOf` to **exactly one** `image_acquisition` entity.
 
-Additionally, it **SHOULD** specify `conformsTo` including this profile’s URI.
+Additionally, it **SHOULD** specify `conformsTo` including this profile’s URI (production crates currently omit this).
 
 Example:
 
@@ -109,9 +107,6 @@ Example:
   "name": "Example OME-Zarr dataset",
   "description": "Converted for the OME 2024 NGFF Challenge",
   "license": "https://creativecommons.org/licenses/by/4.0/",
-  "conformsTo": [
-    { "@id": "https://github.com/lubianat/ozx_ro_crate/crate/tree/0.0.1/profile" }
-  ],
   "resultOf": { "@id": "#acq-001" }
 }
 ```
@@ -134,7 +129,7 @@ This entity **MUST**:
 
 ### 2.4 Required JSON-LD Context
 
-Every conforming crate **MUST** use this context form:
+Every conforming crate **MUST** use this context form (matching the production crates):
 
 ```json
 "@context": [
@@ -145,7 +140,7 @@ Every conforming crate **MUST** use this context form:
     "channel": "https://www.openmicroscopy.org/Schemas/Documentation/Generated/OME-2016-06/ome_xsd.html#Channel",
     "obo": "http://purl.obolibrary.org/obo/",
     "FBcv": "http://ontobee.org/ontology/FBcv/",
-    "acquisition_method": {
+    "acquisiton_method": {
       "@reverse": "https://schema.org/result",
       "@type": "@id"
     },
@@ -160,7 +155,7 @@ Every conforming crate **MUST** use this context form:
 The second context **defines compact terms** for:
 
 * organism taxon (NCBI Taxon IDs),
-* FBbi imaging modality,
+* FBbi imaging modality (`fbbi_id` on the acquisition),
 * specimen and biosample structure,
 * additional useful imaging-related terms.
 
@@ -172,7 +167,7 @@ The OME-Zarr RO-Crate profile defines a **minimal biological chain**:
 
 ```
 Root Dataset
- └─ resultOf → ImageAcquisition
+ └─ resultOf → image_acquisition
     └─ specimen → Specimen
        └─ biosample → Biosample
           └─ organism_classification → NCBI Taxon
@@ -191,9 +186,6 @@ Example:
   "name": "Example OME-Zarr dataset",
   "description": "Converted for the OME 2024 NGFF Challenge",
   "license": "https://creativecommons.org/licenses/by/4.0/",
-  "conformsTo": [
-    { "@id": "https://github.com/lubianat/ozx_ro_crate/crate/tree/0.0.1/profile" }
-  ],
   "resultOf": { "@id": "#acq-001" }
 }
 ```
@@ -205,10 +197,10 @@ Represents the imaging modality and link to the specimen.
 ```json
 {
   "@id": "#acq-001",
-  "@type": "ImageAcquisition",
+  "@type": "image_acquisition",
   "specimen": { "@id": "#spec-001" },
-  "imaging_modality": {
-    "@id": "http://purl.obolibrary.org/obo/FBbi_00000369"
+  "fbbi_id": {
+    "@id": "obo:FBbi_00000369"
   }
 }
 ```
@@ -243,6 +235,39 @@ Acceptable organism values include those provided by `ome2024-ngff-challenge --r
 
 ---
 
+### 3.5 Arbitrary key/value metadata
+
+RO-Crates use a **flattened JSON-LD graph**, so extra metadata should be added on the relevant entity as additional predicates. For simple key/value pairs (e.g., collection date, experimental treatment), crates **MAY** use Schema.org `additionalProperty` with `PropertyValue` while keeping the existing `@context` unchanged. In flattened JSON-LD, each thing gets an `@id` and appears as its own object in `@graph`:
+
+```json
+[
+  {
+    "@id": "./",
+    "@type": "Dataset",
+    "name": "Example OME-Zarr dataset",
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "resultOf": { "@id": "#acq-001" },
+    "additionalProperty": [ { "@id": "#ap-collection" }, { "@id": "#ap-treatment" } ]
+  },
+  {
+    "@id": "#ap-collection",
+    "@type": "PropertyValue",
+    "name": "collection_date",
+    "value": "2024-02-11"
+  },
+  {
+    "@id": "#ap-treatment",
+    "@type": "PropertyValue",
+    "name": "experimental_treatment",
+    "value": "DMSO control"
+  }
+]
+```
+
+If richer semantics are needed, producers MAY extend `@context` with compact terms and use them directly as properties on flattened entities, but simple key/value usage via `additionalProperty` is preferred for interoperability.
+
+---
+
 ## 4. Alignment with the OME 2024 NGFF Challenge
 
 For more details, see the OME 2024 NGFF Challenge repository: [https://github.com/ome/ome2024-ngff-challenge](https://github.com/ome/ome2024-ngff-challenge)
@@ -252,7 +277,7 @@ The OME Challenge tool (`ome2024-ngff-challenge`) already emits:
 * `--rocrate-name` → mapped to Dataset `name`;
 * `--rocrate-description` → mapped to Dataset `description`;
 * `--rocrate-organism` → mapped to Biosample `organism_classification`;
-* `--rocrate-modality` → mapped to Acquisition `imaging_modality`;
+* `--rocrate-modality` → mapped to Acquisition `fbbi_id`;
 * `--cc-by` / `--cc0` / explicit license → mapped to Dataset `license`.
 
 This profile **formalizes** the relationships and required entity graph so the challenge metadata becomes **interoperable RO-Crate**.

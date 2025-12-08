@@ -13,7 +13,7 @@ authors = [Author(name="Tiago Lubiana", orcid="0000-0003-2473-2313")]
 version = "0.0.1"
 
 # Identifier of the root data entity of the profile, if url not applicable then use "./"
-id = f"https://github.com/lubianat/zarro-crate/tree/{version}/profile"
+id = f"https://github.com/lubianat/ozx_ro_crate/crate/tree/{version}/profile"
 
 # Name of the profile
 name = "Experimental OME-Zarr minimal RO-Crate Profile"
@@ -28,14 +28,14 @@ license = License(iri="https://mit-license.org/", name="MIT License")
 # List of the textual resources we use as specifications for this profile
 specifications = [
     TextualResource(
-        name="ISA RO-Crate Profile description",
+        name="OME-Zarr RO-Crate Profile description",
         file_path="ozx_ro_crate.md",
         encoding_format="text/markdown",
         root_data_entity_id=id,
     )
 ]
 
-# List of all the resource descriptors. Here, only the specification is given. Other possible types
+# List of all the resource descriptors. Here, only the specification is given.
 resourceDescriptors = [
     Specification(specifications)
     # Example()
