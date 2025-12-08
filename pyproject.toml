@@ -1,6 +1,6 @@
 [project]
 name = "ozx-ro-crate"
-version = "0.1.0"
+version = "0.0.1"
 description = "Minimal RO-Crate metadata for OME-Zarr files"
 readme = "README.md"
 requires-python = ">=3.12"
