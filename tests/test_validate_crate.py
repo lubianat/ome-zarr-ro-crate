@@ -17,8 +17,8 @@ def test_example_production_crate_has_no_errors():
     assert isinstance(warnings, list)
 
 
-def test_compliant_crate_has_no_errors():
-    data = load("src/examples/valid/compliant_crate.json")
+def test_example_with_extra_context_has_no_errors():
+    data = load("src/examples/valid/example_with_extra_context.json")
     errors, warnings = validate(data)
     assert errors == []
     assert isinstance(warnings, list)
@@ -42,4 +42,30 @@ def test_broken_chain_reports_errors():
     data = load("src/examples/invalid/broken_chain.json")
     errors, warnings = validate(data)
     assert errors  # must report missing specimen/biosample chain
+    assert isinstance(warnings, list)
+
+
+def test_missing_context_terms_reports_errors():
+    data = load("src/examples/invalid/missing_context_terms.json")
+    errors, warnings = validate(data)
+    assert errors
+    assert any("context missing required OME-Zarr term definitions" in e for e in errors)
+    assert isinstance(warnings, list)
+
+
+def test_additional_context_entries_are_allowed():
+    data = load("src/examples/valid/example_production_crate.json")
+    data["@context"].append("https://example.org/custom/context")
+    data["@context"].append({"@vocab": "https://example.org/vocab#"})
+    errors, warnings = validate(data)
+    assert errors == []
+    assert isinstance(warnings, list)
+
+
+def test_missing_required_context_terms_reports_errors():
+    data = load("src/examples/valid/example_production_crate.json")
+    data["@context"] = [data["@context"][0]]  # drop term definitions
+    errors, warnings = validate(data)
+    assert errors
+    assert any("term definitions" in e for e in errors)
     assert isinstance(warnings, list)

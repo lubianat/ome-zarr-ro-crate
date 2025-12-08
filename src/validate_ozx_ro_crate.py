@@ -9,15 +9,42 @@ def validate(crate):
 
     # basic context check
     ctx = crate.get("@context")
-    allowed = {
+    base_contexts = {
         "https://w3id.org/ro/crate/1.1/context",
         "https://w3id.org/ro/crate/1.2/context",
     }
+    required_terms = {
+        "organism_classification": "https://schema.org/taxonomicRange",
+        "BioChemEntity": "https://schema.org/BioChemEntity",
+        "channel": "https://www.openmicroscopy.org/Schemas/Documentation/Generated/OME-2016-06/ome_xsd.html#Channel",
+        "obo": "http://purl.obolibrary.org/obo/",
+        "FBcv": "http://ontobee.org/ontology/FBcv/",
+        "acquisiton_method": {"@reverse": "https://schema.org/result", "@type": "@id"},
+        "biological_entity": "https://schema.org/about",
+        "biosample": "http://purl.obolibrary.org/obo/OBI_0002648",
+        "preparation_method": "https://www.wikidata.org/wiki/Property:P1537",
+        "specimen": "http://purl.obolibrary.org/obo/HSO_0000308",
+    }
+    base_found = False
+    term_mappings = {}
     if isinstance(ctx, list):
-        if not any(c in allowed for c in ctx if isinstance(c, str)):
-            warnings.append("context missing known RO-Crate context (1.1 or 1.2)")
-    elif ctx not in allowed:
-        warnings.append("context missing known RO-Crate context (1.1 or 1.2)")
+        base_found = any(c in base_contexts for c in ctx if isinstance(c, str))
+        for c in ctx:
+            if isinstance(c, dict):
+                term_mappings.update(c)
+    elif isinstance(ctx, str):
+        base_found = ctx in base_contexts
+    else:
+        errors.append("@context should be a string or list")
+
+    if not base_found:
+        errors.append("context missing required RO-Crate base context (1.1 or 1.2)")
+    missing_terms = [k for k, v in required_terms.items() if term_mappings.get(k) != v]
+    if missing_terms:
+        errors.append(
+            "context missing required OME-Zarr term definitions: "
+            + ", ".join(missing_terms)
+        )
 
     # root dataset
     root = idx.get("./")

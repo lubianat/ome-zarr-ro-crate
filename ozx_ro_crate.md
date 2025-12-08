@@ -126,7 +126,32 @@ This entity **MUST**:
 
 ### 2.4 Required JSON-LD Context
 
-Every conforming crate **MUST** use this context form (matching the production crates):
+Every conforming crate **MUST**:
+
+1. include the RO-Crate base context `https://w3id.org/ro/crate/1.1/context` **or** `https://w3id.org/ro/crate/1.2/context`; and
+2. include the following term definitions (values must match):
+
+```json
+{
+  "organism_classification": "https://schema.org/taxonomicRange",
+  "BioChemEntity": "https://schema.org/BioChemEntity",
+  "channel": "https://www.openmicroscopy.org/Schemas/Documentation/Generated/OME-2016-06/ome_xsd.html#Channel",
+  "obo": "http://purl.obolibrary.org/obo/",
+  "FBcv": "http://ontobee.org/ontology/FBcv/",
+  "acquisiton_method": {
+    "@reverse": "https://schema.org/result",
+    "@type": "@id"
+  },
+  "biological_entity": "https://schema.org/about",
+  "biosample": "http://purl.obolibrary.org/obo/OBI_0002648",
+  "preparation_method": "https://www.wikidata.org/wiki/Property:P1537",
+  "specimen": "http://purl.obolibrary.org/obo/HSO_0000308"
+}
+```
+
+Crates **MAY** include additional context entries (extra URLs or term maps) to carry arbitrary Linked Open Data; these do not affect conformance as long as the required base context and terms above are present.
+
+Example (1.1 base context plus extra terms):
 
 ```json
 "@context": [
@@ -145,11 +170,13 @@ Every conforming crate **MUST** use this context form (matching the production c
     "biosample": "http://purl.obolibrary.org/obo/OBI_0002648",
     "preparation_method": "https://www.wikidata.org/wiki/Property:P1537",
     "specimen": "http://purl.obolibrary.org/obo/HSO_0000308"
-  }
+  },
+  "https://example.org/custom/context",
+  { "@vocab": "https://example.org/vocab#" }
 ]
 ```
 
-The second context **defines compact terms** for:
+The required terms define compact identifiers for:
 
 * organism taxon (NCBI Taxon IDs),
 * FBbi imaging modality (`fbbi_id` on the acquisition),
