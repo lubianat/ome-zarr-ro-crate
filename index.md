@@ -11,7 +11,6 @@ This document defines the **OME-Zarr RO-Crate profile**, a minimal RO-Crate conv
 The goal of the profile is to enable individuals generating OME-Zarr data to: 
 
 * add licensing information to the dataset
-* add basic information for searching, namely the imaging modality and the species studied
 * support arbitrary metadata to be packed in OME-Zarr files
 
 The profile is agnostic to OME-Zarr versions and should be compatible with any, as long as it is provided in the root of the Zarr hierarchy. 
@@ -93,7 +92,7 @@ The Root Dataset **MUST**:
 * specify `name`, `description`, and `license`;
 * refer via `resultOf` to **exactly one** `image_acquisition` entity.
 
-Additionally, it **SHOULD** specify `conformsTo` including this profile’s URI (production crates currently omit this).
+Additionally, it **MUST** specify `conformsTo` including this profile’s URI (production crates currently omit this).
 
 Example:
 
@@ -116,10 +115,10 @@ This entity **MUST**:
 
 * have `@type` including `"CreativeWork"`;
 * have `"about": {"@id": "./"}`;
-* declare RO-Crate specification conformance:
+* declare RO-Crate specification conformance to RO-Crate 1.2
 
 ```json
-"conformsTo": { "@id": "https://w3id.org/ro/crate/1.1" }
+"conformsTo": { "@id": "https://w3id.org/ro/crate/1.2" }
 ```
 
 ---
@@ -128,23 +127,8 @@ This entity **MUST**:
 
 Every conforming crate **MUST**:
 
-1. include the RO-Crate base context `https://w3id.org/ro/crate/1.1/context` **or** `https://w3id.org/ro/crate/1.2/context`; and
-2. include the following term definitions (values must match):
-
-```json
-{
-  "organism_classification": "https://schema.org/taxonomicRange",
-  "obo": "http://purl.obolibrary.org/obo/",
-  "acquisiton_method": {
-    "@reverse": "https://schema.org/result",
-    "@type": "@id"
-  },
-  "biological_entity": "https://schema.org/about",
-  "biosample": "http://purl.obolibrary.org/obo/OBI_0002648",
-  "specimen": "http://purl.obolibrary.org/obo/HSO_0000308"
-}
-```
-
+1. include the RO-Crate base context `https://w3id.org/ro/crate/1.2/context`; 
+2. 
 Crates **MAY** include additional context entries (extra URLs or term maps) to carry arbitrary Linked Open Data; these do not affect conformance as long as the required base context and terms above are present.
 
 Optional example terms (not required for conformance; you may include any other terms you need):
@@ -154,42 +138,29 @@ Optional example terms (not required for conformance; you may include any other 
   "BioChemEntity": "https://schema.org/BioChemEntity",
   "channel": "https://www.openmicroscopy.org/Schemas/Documentation/Generated/OME-2016-06/ome_xsd.html#Channel",
   "FBcv": "http://ontobee.org/ontology/FBcv/",
-  "preparation_method": "https://www.wikidata.org/wiki/Property:P1537"
+  "preparation_method": "https://www.wikidata.org/wiki/Property:P1537",
+  "obo": "http://purl.obolibrary.org/obo/",
+  "acquisiton_method": {
+    "@reverse": "https://schema.org/result",
+    "@type": "@id"
+  },
+  "biological_entity": "https://schema.org/about",
+
 }
 ```
 
-Example (1.1 base context plus an optional imaging-oriented block):
+Example (1.2 base context plus an optional imaging-oriented block):
 
 ```json
 "@context": [
-  "https://w3id.org/ro/crate/1.1/context",
+  "https://w3id.org/ro/crate/1.2/context",
   {
     "organism_classification": "https://schema.org/taxonomicRange",
     "obo": "http://purl.obolibrary.org/obo/",
-    "acquisiton_method": {
-      "@reverse": "https://schema.org/result",
-      "@type": "@id"
-    },
     "biological_entity": "https://schema.org/about",
-    "biosample": "http://purl.obolibrary.org/obo/OBI_0002648",
-    "specimen": "http://purl.obolibrary.org/obo/HSO_0000308"
-  },
-  {
-    "BioChemEntity": "https://schema.org/BioChemEntity",
-    "channel": "https://www.openmicroscopy.org/Schemas/Documentation/Generated/OME-2016-06/ome_xsd.html#Channel",
-    "FBcv": "http://ontobee.org/ontology/FBcv/",
-    "preparation_method": "https://www.wikidata.org/wiki/Property:P1537"
-  },
-  "https://example.org/custom/context",
-  { "@vocab": "https://example.org/vocab#" }
+  }
 ]
 ```
-
-The required terms define compact identifiers for:
-
-* organism taxon (NCBI Taxon IDs),
-* the acquisition → specimen → biosample chain,
-* reverse linkage (`acquisiton_method`) back to the root dataset.
 
 The optional block above is illustrative only; include any additional contexts/terms you need for your data.
 
@@ -197,19 +168,9 @@ The optional block above is illustrative only; include any additional contexts/t
 
 ## 3. Required Entities
 
-The OME-Zarr RO-Crate profile defines a **minimal biological chain**:
-
-```
-Root Dataset
- └─ resultOf → image_acquisition
-    └─ specimen → Specimen
-       └─ biosample → Biosample
-          └─ organism_classification → NCBI Taxon
-```
-
 ### 3.1 OME-Zarr File Entities
 
-The crate **SHOULD** define the Zarr group(s) as RO-Crate `Dataset`:
+The crate **MUST** define a RO-Crate `Dataset`:
 
 Example:
 
@@ -220,55 +181,29 @@ Example:
   "name": "Example OME-Zarr dataset",
   "description": "Converted for the OME 2024 NGFF Challenge",
   "license": "https://creativecommons.org/licenses/by/4.0/",
-  "resultOf": { "@id": "#acq-001" }
 }
 ```
 
-### 3.2 ImageAcquisition Entity
+(non normative)
+The ro-crate-metadata.json document may be in the .zarr root (as an attached ro-crate). \
 
-Represents the imaging modality and link to the specimen.
+If it is provided independently, it MAY work as a detached RO-Crate by providing a Zarr url, for example: 
+
+(from https://github.com/NFDI4BIOIMAGE/FAIR-IO/pull/1/files#diff-6b65cda33d25cfaa5b3695218f93f221e7c56c526cc5f639e1927d38221e4047)
 
 ```json
-{
-  "@id": "#acq-001",
-  "@type": "image_acquisition",
-  "specimen": { "@id": "#spec-001" },
-  "fbbi_id": {
-    "@id": "obo:FBbi_00000369"
-  }
-}
+    "@graph": [
+      {
+        "@id": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BIAD464",
+        "@type": "Dataset",
+        "name": "Calcium wave dynamics",
+        "description": "Time lapse image of whole leaves expressing calcium and glutamate responses",
+        "license": "https://creativecommons.org/licenses/by/4.0/",
+        "hasPart":{"@id":"https://uk1s3.embassy.ebi.ac.uk/ebi-ngff-challenge-2024/c0e5d621-62cc-43a6-9dad-2ddab8959d17.zarr/zarr.json"}
+      }
 ```
 
-### 3.3 Specimen Entity
-
-If present, a specimen **MUST** refer to exactly one biosample.
-
-```json
-{
-  "@id": "#spec-001",
-  "@type": "specimen",
-  "biosample": { "@id": "#bios-001" }
-}
-```
-
-### 3.4 Biosample Entity
-
-
-```json
-{
-  "@id": "#bios-001",
-  "@type": "biosample",
-  "organism_classification": {
-    "@id": "http://purl.obolibrary.org/obo/NCBITaxon_9606"
-  }
-}
-```
-
-Acceptable organism values include those provided by `ome2024-ngff-challenge --rocrate-organism` (e.g., `NCBI:txid9606`), which SHOULD be normalized by the profile context to resolvable URIs.
-
----
-
-### 3.5 Arbitrary key/value metadata
+### 3.1 Arbitrary key/value metadata
 
 RO-Crates use a **flattened JSON-LD graph**, so extra metadata should be added on the relevant entity as additional predicates. For simple key/value pairs (e.g., collection date, experimental treatment), crates **MAY** use Schema.org `additionalProperty` with `PropertyValue` while keeping the existing `@context` unchanged. In flattened JSON-LD, each thing gets an `@id` and appears as its own object in `@graph`:
 
@@ -297,7 +232,30 @@ RO-Crates use a **flattened JSON-LD graph**, so extra metadata should be added o
 ]
 ```
 
-If richer semantics are needed, producers MAY extend `@context` with compact terms and use them directly as properties on flattened entities, but simple key/value usage via `additionalProperty` is preferred for interoperability.
+If richer semantics are needed, producers may add use `@context` and URIs to provide ontology terms to the key value pairs.
+
+```json
+{
+  "@id": "#acq-001",
+  "name": "image_acquisition_method",
+  "fbbi_id": {
+    "@id": "obo:FBbi_00000369"
+  }
+}
+```
+
+```json
+{
+  "@id": "#bios-001",
+  "name": "taxon", 
+  "value": {
+    "@id": "http://purl.obolibrary.org/obo/NCBITaxon_9606"
+  }
+}
+```
+
+Acceptable organism values include those provided by `ome2024-ngff-challenge --rocrate-organism` (e.g., `NCBI:txid9606`), which SHOULD be normalized by the profile context to resolvable URIs.
+
 
 ---
 
@@ -305,12 +263,6 @@ If richer semantics are needed, producers MAY extend `@context` with compact ter
 
 For more details, see the OME 2024 NGFF Challenge repository: [https://github.com/ome/ome2024-ngff-challenge](https://github.com/ome/ome2024-ngff-challenge)
 
-The OME Challenge tool (`ome2024-ngff-challenge`) already emits:
+This version of the crate uses a different, more minimal modelling in comparison to the OME Challenge tool (`ome2024-ngff-challenge`).
 
-* `--rocrate-name` → mapped to Dataset `name`;
-* `--rocrate-description` → mapped to Dataset `description`;
-* `--rocrate-organism` → mapped to Biosample `organism_classification`;
-* `--rocrate-modality` → mapped to Acquisition `fbbi_id`;
-* `--cc-by` / `--cc0` / explicit license → mapped to Dataset `license`.
-
-This profile **formalizes** the relationships and required entity graph so the challenge metadata becomes **interoperable RO-Crate**.
+In particular, it does not enforce a model for samples or for the image acquisition method.
