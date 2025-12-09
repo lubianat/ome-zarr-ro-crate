@@ -1,5 +1,5 @@
 [project]
-name = "ozx-ro-crate"
+name = "ome-zarr-ro-crate"
 version = "0.0.1dev"
 description = "Minimal RO-Crate metadata for OME-Zarr files"
 readme = "README.md"

@@ -13,7 +13,7 @@ authors = [Author(name="Tiago Lubiana", orcid="0000-0003-2473-2313")]
 version = "0.0.1dev"
 
 # Identifier of the root data entity of the profile, if url not applicable then use "./"
-id = f"https://github.com/lubianat/ozx_ro_crate/crate/tree/{version}/profile"
+id = f"https://github.com/lubianat/ome-zarr-ro-crate/crate/tree/{version}/profile"
 
 # Name of the profile
 name = "Experimental OME-Zarr minimal RO-Crate Profile"

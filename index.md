@@ -79,7 +79,7 @@ Example:
 
 ```json
 "conformsTo": [
-  { "@id": "https://github.com/lubianat/ozx_ro_crate/crate/tree/0.0.1/profile" }
+  { "@id": "https://github.com/lubianat/ome-zarr-ro-crate/crate/tree/0.0.1/profile" }
 ]
 ```
 

@@ -130,7 +130,7 @@ wheels = [
 ]
 
 [[package]]
-name = "ozx-ro-crate"
+name = "ome-zarr-ro-crate"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
